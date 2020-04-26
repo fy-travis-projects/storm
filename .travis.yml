@@ -17,9 +17,6 @@ env:
   - MODULES=Client
   - MODULES=Server
   - MODULES=Core
-  - MODULES=External
-  - MODULES=Integration-Test
-  - MODULES=Check-Updated-License-Files
 
 dist: trusty
 sudo: required
@@ -31,12 +28,6 @@ before_cache:
 language: java
 jdk:
   - oraclejdk8
-  - openjdk11
-  
-matrix:
-  include:
-    - arch: s390x
-      jdk: openjdk11
       
 before_install:
   - rvm reload
@@ -54,10 +45,6 @@ before_install:
   - export PATH=$MVN_HOME/bin:$PATH
 
 install: /bin/bash ./dev-tools/travis/travis-install.sh `pwd`
-script:
-  - if [[ $(uname -m) != 's390x' ]]; then 
-      /bin/bash ./dev-tools/travis/travis-script.sh `pwd` $MODULES;
-    fi
 cache:
   directories:
     - "$HOME/.m2/repository"
