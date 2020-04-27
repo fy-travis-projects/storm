@@ -26,7 +26,7 @@ before_install:
 
 install: true
 script:
-  - mvn -Drat.skip=true -DskipTests=true install
+  - mvn clean -Drat.skip=true -DskipTests=true install | egrep -v "(^\[INFO\]|^\[DEBUG\])"
 cache:
   directories:
     - "$HOME/.m2/repository"
