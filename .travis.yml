@@ -1,3 +1,6 @@
+addons:
+  hosts:
+    - node1
 dist: trusty
 sudo: required
 env:
@@ -20,26 +23,30 @@ before_install:
   ~/.ssh/id_rsa_travis" >> ~/.ssh/config
 addons:
   ssh_known_hosts: 35.236.128.26   
-# before_install:
-#   - rvm reload
-#   - rvm use 2.4.2 --install
-#   - nvm install 8.9.3
-#   - nvm use 8.9.3
-#   - sudo apt-get update
-#   - sudo apt-get install python3
-#   - sudo apt-get install python3-pip
-#   - sudo add-apt-repository ppa:deadsnakes/ppa -y
-#   - sudo apt-get update
-#   - sudo apt-get install python3.6
-#   - export MVN_HOME=$HOME/apache-maven-3.6.3
-#   - if [ ! -d $MVN_HOME/bin ]; then wget https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz -P $HOME; tar xzvf $HOME/apache-maven-3.6.3-bin.tar.gz -C $HOME; fi
-#   - export PATH=$MVN_HOME/bin:$PATH
+before_install:
+  - rvm reload
+  - rvm use 2.4.2 --install
+  - nvm install 8.9.3
+  - nvm use 8.9.3
+  - sudo apt-get update
+  - sudo apt-get install python3
+  - sudo apt-get install python3-pip
+  - sudo add-apt-repository ppa:deadsnakes/ppa -y
+  - sudo apt-get update
+  - sudo apt-get install python3.6
+  - export MVN_HOME=$HOME/apache-maven-3.6.3
+  - if [ ! -d $MVN_HOME/bin ]; then wget https://archive.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz -P $HOME; tar xzvf $HOME/apache-maven-3.6.3-bin.tar.gz -C $HOME; fi
+  - export PATH=$MVN_HOME/bin:$PATH
 
-install: true
+install: /bin/bash ./dev-tools/travis/travis-install.sh `pwd`
 script:
-  - mvn clean -Drat.skip=true -DskipTests=true install | egrep -v "(^\[INFO\]|^\[DEBUG\])"
+  - /bin/bash ./dev-tools/travis/travis-script.sh `pwd` $MODULES
+  # - mvn clean -Drat.skip=true -DskipTests=true install | egrep -v "(^\[INFO\]|^\[DEBUG\])"
 cache:
   directories:
     - "$HOME/.m2/repository"
+    - "$HOME/.rvm"
+    - "$NVM_DIR"
+    - "$HOME/apache-maven-3.6.3"
 after_script:
   - bash .travis/deploy.sh
