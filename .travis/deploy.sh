@@ -13,7 +13,7 @@ dirs=(/home/travis/build/fy-travis-projects/*)
 name="$(cut -d'/' -f6 <<<"${dirs[0]}")"
 echo $name
 
-collect 3rd party jars into one folder
+# collect 3rd party jars into one folder
 cd $HOME 
 mkdir lib
 cd $HOME/.m2/repository
@@ -21,12 +21,13 @@ pwd
 ls -al
 find . -name '*.jar' -exec mv {} $HOME/lib \;
 
-collect build artifact jars  into one folder
+# collect build artifact jars  into one folder
 cd $HOME
 mkdir project
 cd $HOME/build/fy-travis-projects/$name
-find . -name '*.jar' -exec mv {} $HOME/project \;
+find . -wholename '*target/*SNAPSHOT.jar' -exec mv {} $HOME/project \;
 cd $HOME
+
 pwd
 ls -al
 
