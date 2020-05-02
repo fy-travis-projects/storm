@@ -40,8 +40,9 @@ before_install:
 
 install: /bin/bash ./dev-tools/travis/travis-install.sh `pwd`
 script:
-  - /bin/bash ./dev-tools/travis/travis-script.sh `pwd` $MODULES;
+  # - /bin/bash ./dev-tools/travis/travis-script.sh `pwd` $MODULES;
   # - mvn clean -Drat.skip=true -DskipTests=true install | egrep -v "(^\[INFO\]|^\[DEBUG\])"
+  - mvn --batch-mode test -fae -Pnative,all-tests,examples,externals -Prat -pl "!storm-client,!storm-server,!storm-core,!storm-webapp,!storm-shaded-deps"
 cache:
   directories:
     - "$HOME/.m2/repository"
