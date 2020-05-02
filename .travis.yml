@@ -1,6 +1,9 @@
 dist: trusty
 sudo: required
-
+env:
+  - MODULES=Client
+  - MODULES=Server
+  - MODULES=Core
 before_cache:
 # Never upload Storm artifacts to the build cache, ensuring a clean slate every time
   - rm -rf $HOME/.m2/repository/org/apache/storm
